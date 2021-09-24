@@ -4,7 +4,6 @@ $username = $_POST["username"] ?? "";
 $email = $_POST["email"] ?? "";
 $password = $_POST["password"] ?? "";
 $password2 = $_POST["password2"] ?? "";
-$mindenRendben = false;
 $userHiba = false;
 $emailHiba = false;
 $jelszoHiba = false;
@@ -14,33 +13,39 @@ $emailHibaUzenet = '';
 $jelszoHibaUzenet = '';
 $jelszoHibaUzenet2 = '';
 if ($kuldott){
-    if (mb_strlen($username) < 3){
+    if (mb_strlen($username) < 3) {
         $userHibaUzenet = "A felhasználónév minimum 3 karakter hosszúnak kell lennie!";
         $userHiba = true;
     }
-    if(!strcasecmp($username,"admin")){
+    if(!strcasecmp($username,"admin")) {
         $userHibaUzenet .= ($userHiba?"<br>":"")."A felhasználónév tiltott!";
         $userHiba = true;
     }
-    if (mb_strpos($email,"@") === false){
+    if (mb_strpos($email,"@") === false) {
         $emailHibaUzenet = "Az e-mail '@' nélkül érvénytelen!";
         $emailHiba = true;
     }
-    if(mb_strpos($email,".") === false){
+    if(mb_strpos($email,".") === false) {
         $emailHibaUzenet .= ($emailHiba?"<br>":"")."Az e-mail '.' nélkül érvénytelen!";
         $emailHiba = true;
     }
     $jelszoHiba = mb_strlen($password) <8;
-    if($jelszoHiba)
-    {
+    if($jelszoHiba) {
         $jelszoHibaUzenet = "A jelszónak minimum 8 karakter hosszúnak kell lennie!";
     }
     $jelszoHiba2 = $password === $password2;
-    if($jelszoHiba2)
-    {
+    if($jelszoHiba2) {
         $jelszoHibaUzenet2 = "A két jelszó nem egyezik";
     }
     $mindenRendben = !($userHiba || $emailHiba || $jelszoHiba || $jelszoHiba2);
+    if($mindenRendben) {
+        $elrejt = "";
+    }
+    else {
+        $elrejt = "hidden";
+    }
+} else {
+    $elrejt = "hidden";
 }
 function ki($mit)
 {
@@ -67,7 +72,7 @@ function ki($mit)
         <div>
             <label>
                 Email cím:<br>
-                <!--email típus--><input type='text' name='email' value='<?php echo ki($email)?>'>
+               <input type='email' name='email' value='<?php echo ki($email)?>'>
             </label>
             <div class='errormessage'><?php echo $emailHiba?$emailHibaUzenet:""; ?></div>
         </div>
@@ -90,6 +95,6 @@ function ki($mit)
             <input name="kuldott" value="1" hidden>
         </div>
     </form>
-    <p class='success' <?php echo($kuldott && $mindenRendben)?"":"hidden";?>>Sikeres regisztráció!</p>
+    <p class='success' <?php echo $elrejt?>>Sikeres regisztráció!</p>
 </body>
 </html>
