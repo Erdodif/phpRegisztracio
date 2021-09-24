@@ -8,6 +8,7 @@ $userHiba = false;
 $emailHiba = false;
 $jelszoHiba = false;
 $jelszoHiba2 = false;
+$mindenRendben = false;
 $userHibaUzenet = '';
 $emailHibaUzenet = '';
 $jelszoHibaUzenet = '';
@@ -33,19 +34,11 @@ if ($kuldott){
     if($jelszoHiba) {
         $jelszoHibaUzenet = "A jelszónak minimum 8 karakter hosszúnak kell lennie!";
     }
-    $jelszoHiba2 = $password === $password2;
+    $jelszoHiba2 = !($password === $password2);
     if($jelszoHiba2) {
         $jelszoHibaUzenet2 = "A két jelszó nem egyezik";
     }
     $mindenRendben = !($userHiba || $emailHiba || $jelszoHiba || $jelszoHiba2);
-    if($mindenRendben) {
-        $elrejt = "";
-    }
-    else {
-        $elrejt = "hidden";
-    }
-} else {
-    $elrejt = "hidden";
 }
 function ki($mit)
 {
@@ -95,6 +88,6 @@ function ki($mit)
             <input name="kuldott" value="1" hidden>
         </div>
     </form>
-    <p class='success' <?php echo $elrejt?>>Sikeres regisztráció!</p>
+    <p class='success'><?php echo $mindenRendben?"Sikeres regisztráció!":""?></p>
 </body>
 </html>
